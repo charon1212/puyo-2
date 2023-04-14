@@ -8,5 +8,11 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^18.15.11"
+  },
+  "dependencies": {
+    "util-charon1212": "^1.20.1"
+  }
 }
