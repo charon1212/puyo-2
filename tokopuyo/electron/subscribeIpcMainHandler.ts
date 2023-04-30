@@ -10,6 +10,7 @@ const subscriptions: MyAPI = {
   callSample: (sample) => console.log(`sample! ${sample.name}`),
   writeFile: (filePath, content) => fs.writeFileSync(filePath, content),
   readFile: (filePath) => fs.readFileSync(filePath),
+  fileExists: (filePath) => fs.existsSync(filePath),
 };
 
 // electron起動の中で、この関数を呼び出す。
