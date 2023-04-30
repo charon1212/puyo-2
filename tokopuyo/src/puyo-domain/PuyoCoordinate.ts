@@ -29,7 +29,7 @@ export type PuyoCoordinate = { x: number, dir: Dir };
 export const getCoordinates = ({ x, dir }: PuyoCoordinate) => {
   const parentX = x;
   const parentY = 1;
-  return { parentX, parentY, childX: parentX + dx[dir - 1], childY: parentY + dy[dir - 1] };
+  return { parentX, parentY, childX: parentX + dx[dir], childY: parentY + dy[dir] };
 };
 
 const dx = [0, 1, 0, -1];
