@@ -1,6 +1,7 @@
 import { emptyColor, PuyoColor } from "./PuyoColor";
-import { Dir, DirDown, getCoordinates } from "./PuyoCoordinate";
+import { Dir, DirDown, getCoordinates, PuyoCoordinate } from "./PuyoCoordinate";
 import { Arr } from 'util-charon1212';
+import { PuyoTsumo } from "./PuyoTsumo";
 
 type Point = { x: number, y: number };
 const eraseConnectCount = 4; // 何個ぷよが連結したら消すか
@@ -41,15 +42,15 @@ export class PuyoBoard {
    * @param x 親ぷよのx座標
    * @param dir 親ぷよに対する子ぷよの方向
    */
-  put(parent: PuyoColor, child: PuyoColor, x: number, dir: Dir) {
-    const { parentX, childX } = getCoordinates({ x, dir });
-    if (dir === DirDown) {
+  put(tsumo: PuyoTsumo, cor: PuyoCoordinate) {
+    const { parentX, childX } = getCoordinates(cor);
+    if (cor.dir === DirDown) {
       // 子ぷよが下の場合、子ぷよから先に置く
-      this.putOne(child, childX);
-      this.putOne(parent, parentX);
+      this.putOne(tsumo[1], childX);
+      this.putOne(tsumo[0], parentX);
     } else {
-      this.putOne(parent, parentX);
-      this.putOne(child, childX);
+      this.putOne(tsumo[0], parentX);
+      this.putOne(tsumo[1], childX);
     }
   }
   private putOne(p: PuyoColor, x: number) {
