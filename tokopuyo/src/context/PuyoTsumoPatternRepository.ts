@@ -4,7 +4,7 @@ import { PuyoTsumoPatternRepository } from "../puyo-domain/PuyoTsumoPatternRepos
 const [PuyoTsumoPatternRepositoryProvider, usePuyoTsumoPatternRepository] = createStateContext<PuyoTsumoPatternRepository>(new PuyoTsumoPatternRepository());
 export { PuyoTsumoPatternRepositoryProvider, usePuyoTsumoPatternRepository };
 
-const tsumoPatternFilePath = '%USERPROFILE%/.electron/charon1212/output.txt';
+const tsumoPatternFilePath = '%USERPROFILE%/.electron/charon1212/PuyoTsumo.txt';
 export const getInitialPuyoTsumoPatternRepository = async () => {
   const newRepository = new PuyoTsumoPatternRepository();
   const exists = await window.myAPI.fileExists(tsumoPatternFilePath)
