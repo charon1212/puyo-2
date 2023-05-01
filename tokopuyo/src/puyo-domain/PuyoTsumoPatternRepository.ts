@@ -62,9 +62,9 @@ export class PuyoTsumoPatternRepository {
    * 指定したIDのツモパターンを取得する。
    */
   get(id: number): PuyoTsumoPatternInfo {
-    if (id < 0) throw new Error('Index out of range.');
-    if (this.listStr.length >= id) throw new Error('Index out of range.');
-    if (this.listPattern.length >= id) throw new Error('Index out of range.');
+    if (id < 0) throw new Error(`Index out of range. id=${id}`);
+    if (id >= this.listStr.length) throw new Error(`Index out of range. id=${id}`);
+    if (id >= this.listPattern.length) throw new Error(`Index out of range. id=${id}`);
     return { id, str: this.listStr[id], pattern: this.listPattern[id] };
   }
 };
