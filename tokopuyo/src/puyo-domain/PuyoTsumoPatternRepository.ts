@@ -16,6 +16,7 @@ export class PuyoTsumoPatternRepository {
       this.listPattern.push(convert(line));
     }
   }
+  isEmpty() { return this.listPattern.length === 0 };
   /** 登録されているツモパターンからランダムに一つ選択する */
   getRandom() {
     if (this.listPattern.length === 0) throw new Error('登録なし。');
