@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Dir, DirUp, PuyoCoordinate, getCoordinateOperator } from '../puyo-domain/PuyoCoordinate';
 import { PuyoTsumoPattern } from '../puyo-domain/PuyoTsumoPattern';
 import { ColorMapping } from './ColorMapping';
@@ -17,7 +17,13 @@ const boardHeight = 13;
 const { moveLeft, moveRight, rotateLeft, rotateRight } = getCoordinateOperator(0, 5);
 const waitRensaMs = 400;
 
-type Props = { pattern: PuyoTsumoPattern; reset: () => unknown; keyConfig: TokopuyoGameKeyConfig; colorMapping: ColorMapping; radius: number };
+type Props = {
+  pattern: PuyoTsumoPattern;
+  reset: (resetState: () => void) => unknown;
+  keyConfig: TokopuyoGameKeyConfig;
+  colorMapping: ColorMapping;
+  radius: number;
+};
 export const TokopuyoGame = (props: Props) => {
   const { pattern, reset, keyConfig, colorMapping, radius } = props;
 
@@ -109,7 +115,7 @@ export const TokopuyoGame = (props: Props) => {
     else if (operation === 'fall') fall();
     else if (operation === 'back') index > 0 && moveHistory(-1);
     else if (operation === 'next') index < history.length - 1 && moveHistory(+1);
-    else if (operation === 'reset') reset();
+    else if (operation === 'reset') reset(resetState);
   };
   const onChangeCountNext: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
     const value = Number(e.target.value);
