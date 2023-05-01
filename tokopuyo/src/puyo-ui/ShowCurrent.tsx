@@ -16,7 +16,6 @@ export const ShowCurrent = (props: Props) => {
   const board = useMemo(() => {
     const { parentX, parentY, childX, childY } = getCoordinates({ x, dir });
     const newBoard = new PuyoBoard({ width: 6, height: 3 });
-    console.log({ parentX, parentY, childX, childY, tsumo, x, dir });
     newBoard.board[parentY][parentX] = tsumo[0];
     newBoard.board[childY][childX] = tsumo[1];
     return newBoard;
