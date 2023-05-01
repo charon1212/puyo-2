@@ -8,9 +8,13 @@ const store = new ElectronStore();
 
 const subscriptions: MyAPI = {
   callSample: (sample) => console.log(`sample! ${sample.name}`),
-  writeFile: (filePath, content) => fs.writeFileSync(filePath, content),
-  readFile: (filePath) => fs.readFileSync(filePath).toString(),
-  fileExists: (filePath) => fs.existsSync(filePath),
+  writeFile: (filePath, content) => fs.writeFileSync(replaceEnv(filePath), content),
+  readFile: (filePath) => fs.readFileSync(replaceEnv(filePath)).toString(),
+  fileExists: (filePath) => fs.existsSync(replaceEnv(filePath)),
+};
+
+const replaceEnv = (str: string): string => {
+  return str.replace(/%USERPROFILE%/g, process.env['USERPROFILE'] || '');
 };
 
 // electron起動の中で、この関数を呼び出す。
