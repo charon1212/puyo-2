@@ -13,7 +13,7 @@ export type Sample = { name: string, };
 export type MyAPI = {
   callSample: (sample: Sample) => void,
   writeFile: (filePath: string, content: string) => void,
-  readFile: (filePath: string) => Buffer,
+  readFile: (filePath: string) => string,
   fileExists: (filePath: string) => boolean,
 };
 

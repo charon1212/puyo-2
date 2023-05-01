@@ -9,7 +9,7 @@ const store = new ElectronStore();
 const subscriptions: MyAPI = {
   callSample: (sample) => console.log(`sample! ${sample.name}`),
   writeFile: (filePath, content) => fs.writeFileSync(filePath, content),
-  readFile: (filePath) => fs.readFileSync(filePath),
+  readFile: (filePath) => fs.readFileSync(filePath).toString(),
   fileExists: (filePath) => fs.existsSync(filePath),
 };
 
