@@ -1,6 +1,7 @@
 import { PuyoTsumoPattern } from './puyo-domain/PuyoTsumoPattern';
 import { getRandomColorMapping } from './puyo-ui/ColorMapping';
-import { TokopuyoGame, TokopuyoGameKeyConfig } from './puyo-ui/TokopuyoGame';
+import { TokopuyoGame } from './puyo-ui/TokopuyoGame';
+import { getDefaultKeyConfig } from './puyo-ui/TokopuyoGameKeyConfig';
 
 const colorMapping = getRandomColorMapping();
 const testPattern: PuyoTsumoPattern = [
@@ -13,16 +14,6 @@ const testPattern: PuyoTsumoPattern = [
   [2, 4],
   [4, 4],
 ];
-const defaultKeyConfig: TokopuyoGameKeyConfig = [
-  { key: 'ArrowLeft', operation: 'left' },
-  { key: 'ArrowRight', operation: 'right' },
-  { key: 'z', operation: 'rotateLeft' },
-  { key: 'x', operation: 'rotateRight' },
-  { key: 'ArrowDown', operation: 'fall' },
-  { key: 'r', operation: 'reset' },
-  { key: 'a', operation: 'back' },
-  { key: 's', operation: 'next' },
-];
 
 type Props = {};
 export const App = (props: Props) => {
@@ -30,7 +21,7 @@ export const App = (props: Props) => {
   return (
     <>
       <h1>tokopuyo</h1>
-      <TokopuyoGame radius={15} colorMapping={colorMapping} keyConfig={defaultKeyConfig} pattern={testPattern} reset={() => {}} />
+      <TokopuyoGame radius={15} colorMapping={colorMapping} keyConfig={getDefaultKeyConfig()} pattern={testPattern} reset={() => {}} />
     </>
   );
 };

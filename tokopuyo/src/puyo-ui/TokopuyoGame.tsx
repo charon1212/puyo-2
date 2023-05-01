@@ -8,6 +8,7 @@ import { PuyoBoardView } from './PuyoBoardView';
 import { PuyoTsumo } from '../puyo-domain/PuyoTsumo';
 import { Arr } from 'util-charon1212';
 import { ShowNext } from './ShowNext';
+import { TokopuyoGameKeyConfig } from './TokopuyoGameKeyConfig';
 
 const initX = 2;
 const initDir = DirUp;
@@ -15,13 +16,6 @@ const boardWidth = 6;
 const boardHeight = 13;
 const { moveLeft, moveRight, rotateLeft, rotateRight } = getCoordinateOperator(0, 5);
 const waitRensaMs = 400;
-
-export type TokopuyoGameKeyConfigOperation = 'left' | 'right' | 'rotateLeft' | 'rotateRight' | 'fall' | 'reset' | 'back' | 'next';
-/**
- * TokopuyoGame用のキーコンフィグ。
- * key値はそのままKeyDownイベントのe.keyと比較するので、設定する値は<https://www.w3.org/TR/uievents-key/#named-key-attribute-values>を参照すること。
- */
-export type TokopuyoGameKeyConfig = { key: string; operation: TokopuyoGameKeyConfigOperation }[];
 
 type Props = { pattern: PuyoTsumoPattern; reset: () => unknown; keyConfig: TokopuyoGameKeyConfig; colorMapping: ColorMapping; radius: number };
 export const TokopuyoGame = (props: Props) => {
