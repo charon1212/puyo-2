@@ -49,15 +49,18 @@ export class PuyoTsumoPatternRepository {
   getPattern(prefixTsumo: PuyoTsumo[], patternNum: number) {
     const searched = this.searchPrefix(prefixTsumo);
     const patterns = searched.map((v) => v.pattern.filter((_, i) => i >= prefixTsumo.length && i < prefixTsumo.length + patternNum));
-    const result: PuyoTsumo[][] = [];
-    const equal = (t1: PuyoTsumo[], t2: PuyoTsumo[]) => t1.length === t2.length && t1.every((_, i) => t1[i][0] === t2[i][0] && t1[i][1] === t2[i][1]);
-    let prev: PuyoTsumo[] | undefined = undefined;
+    const list: { pattern: PuyoTsumo[], num: number, str: string }[] = [];
+    let prev = '';
     for (let p of patterns) {
-      if (prev && equal(prev, p)) continue;
-      result.push(p);
-      prev = p;
+      const str = p.map(([p, c]) => `${p}${c}`).join('');
+      if (str === prev) {
+        list[list.length - 1].num++;
+      } else {
+        list.push({ pattern: p, num: 1, str });
+        prev = str;
+      }
     }
-    return result;
+    return list;
   }
   /**
    * 指定したIDのツモパターンを取得する。
