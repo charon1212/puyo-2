@@ -23,6 +23,6 @@ export const edit1 = () => {
   }
 
   fs.writeFileSync('file/output.json', JSON.stringify(output));
-  fs.writeFileSync('file/output.json.type', "type Output = { start: 'AAAA' | 'AAAB' | 'AABB' | 'ABAC' | 'AABC', tsumoPatternList: { id: string, pattern: string, allClear: number, }[], }");
+  fs.writeFileSync('file/output.json.type', "type Output = { start: 'AAAA' | 'AAAB' | 'AABB' | 'ABAC' | 'AABC', tsumoPatternList: { id: string, pattern: string, allClear: number, }[], }[]");
 
 };
