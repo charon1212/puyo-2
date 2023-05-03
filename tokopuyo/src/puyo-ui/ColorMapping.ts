@@ -12,6 +12,13 @@ export const getRandomColorMapping = (): ColorMapping => {
     4: arr[3],
   };
 };
+export const getDefaultColorMapping = (): ColorMapping => ({
+  0: '',
+  1: 'red',
+  2: 'blue',
+  3: 'yellow',
+  4: 'green',
+});
 
 const shuffle = <T>(arr: T[]) => {
   for (let i = 0; i < arr.length - 1; i++)
