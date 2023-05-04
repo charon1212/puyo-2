@@ -19,13 +19,15 @@ const waitRensaMs = 400;
 
 type Props = {
   pattern: PuyoTsumoPattern;
-  reset: (resetState: () => void) => unknown;
   keyConfig: TokopuyoGameKeyConfig;
   colorMapping: ColorMapping;
   radius: number;
+  beforeOnKeyPress?: (key: string) => unknown;
+  afterOnKeyPress?: (key: string) => unknown;
+  showRensaCount?: boolean;
 };
 export const TokopuyoGame = (props: Props) => {
-  const { pattern, reset, keyConfig, colorMapping, radius } = props;
+  const { pattern, keyConfig, colorMapping, radius, beforeOnKeyPress, afterOnKeyPress, showRensaCount } = props;
 
   const getTsumo = (index: number): PuyoTsumo => {
     if (pattern.length === 0) return [0, 0];
@@ -40,6 +42,7 @@ export const TokopuyoGame = (props: Props) => {
   const [index, setIndex] = useState(0); // 何手目まで進んでいるかを表すindex。5手目が置き終わって6手目を置く状況は、index=5となる。
   const [countShowNext, setCountShowNext] = useState(1); // Nextの表示数
   const [inRensaAnimation, setInRensaAnimation] = useState(false); // アニメーション表示中で、ユーザーの操作を受け付けないかどうかを表す。trueなら操作を受け付けない。
+  const [rensaCount, setRensaCount] = useState(0);
 
   const resetCoordinate = () => {
     setX(initX);
@@ -51,6 +54,7 @@ export const TokopuyoGame = (props: Props) => {
     setHistory([new PuyoBoard({ width: boardWidth, height: boardHeight })]);
     setIndex(0);
     setInRensaAnimation(false);
+    setRensaCount(0);
   };
 
   useEffect(() => {
@@ -77,15 +81,17 @@ export const TokopuyoGame = (props: Props) => {
     setIndex(index + 1);
     resetCoordinate();
     setInRensaAnimation(true);
-    rensa(newBoard);
+    rensa(newBoard, true);
   };
-  const rensa = (board: PuyoBoard) => {
+  const rensa = (board: PuyoBoard, resetRensaCount?: boolean) => {
     const erasedBoard = board.deepCopy();
     const erased = erasedBoard.erase();
     if (erased) {
       const falledBoard = erasedBoard.deepCopy();
       falledBoard.fall();
+      if (resetRensaCount) setRensaCount(0);
       setTimeout(() => {
+        setRensaCount((p) => p + 1);
         setBoard(erasedBoard);
       }, waitRensaMs);
       setTimeout(() => {
@@ -108,6 +114,7 @@ export const TokopuyoGame = (props: Props) => {
     e.preventDefault();
     if (inRensaAnimation) return;
     const operation = keyConfig.find(({ key }) => e.key === key)?.operation;
+    beforeOnKeyPress?.(e.key);
     if (operation === 'left') operateCurrent(moveLeft);
     else if (operation === 'right') operateCurrent(moveRight);
     else if (operation === 'rotateLeft') operateCurrent(rotateLeft);
@@ -115,7 +122,8 @@ export const TokopuyoGame = (props: Props) => {
     else if (operation === 'fall') fall();
     else if (operation === 'back') index > 0 && moveHistory(-1);
     else if (operation === 'next') index < history.length - 1 && moveHistory(+1);
-    else if (operation === 'reset') reset(resetState);
+    else if (operation === 'reset') resetState();
+    afterOnKeyPress?.(e.key);
   };
   const onChangeCountNext: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
     const value = Number(e.target.value);
@@ -132,6 +140,7 @@ export const TokopuyoGame = (props: Props) => {
         <div tabIndex={0} onKeyDown={onKeyDown} style={{ flexShrink: 0 }}>
           <ShowCurrent tsumo={getTsumo(index)} cor={{ x, dir }} colorMapping={colorMapping} radius={radius} />
           <PuyoBoardView board={board} colorMapping={colorMapping} radius={radius} />
+          <div style={{ width: '100%', textAlign: 'center' }}>{showRensaCount && rensaCount > 0 ? `${rensaCount}連鎖` : ''}</div>
         </div>
         <div style={{ marginLeft: '30px' }}>
           <select value={countShowNext.toString()} onChange={onChangeCountNext}>

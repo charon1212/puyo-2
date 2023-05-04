@@ -1,12 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { ColorMapping, getRandomColorMapping } from '../../puyo-ui/ColorMapping';
 import { TokopuyoGame } from '../../puyo-ui/TokopuyoGame';
 import { getDefaultKeyConfig } from '../../puyo-ui/TokopuyoGameKeyConfig';
-import { PuyoTsumoPatternInfo } from '../../puyo-domain/PuyoTsumoPatternRepository';
 import { PatternPrefixList, SelectValuePatternPrefixList } from './PatternPrefixList';
 import { usePuyoTsumoPatternRepository2 } from '../../context/PuyoTsumoPatternRepository2';
 import { useTsumoPatternList } from './useTsumoPatternList';
 import { FoundationMemoView } from './FoundationMemoView';
+
+const keyConfig = getDefaultKeyConfig();
+keyConfig.push({ key: 'e', operation: 'reset' });
 
 export const TopPage = () => {
   const [repository] = usePuyoTsumoPatternRepository2();
@@ -31,14 +33,19 @@ const TopPage2 = () => {
         </div>
         <div>{uiTsumoPatternList}</div>
         <div>
+          <div>←→:移動, zx:回転, as:戻進</div>
+          <div>e:リセット(同じツモ), r:リセット(別ツモ)</div>
           <TokopuyoGame
             radius={15}
             colorMapping={colorMapping}
-            keyConfig={getDefaultKeyConfig()}
+            keyConfig={keyConfig}
             pattern={selectedPuyoTsumoPatternInfo?.pattern ?? []}
-            reset={() => {
-              setRandom();
-              setColorMapping(getRandomColorMapping());
+            showRensaCount
+            beforeOnKeyPress={(key) => {
+              if (key === 'r') {
+                setRandom();
+                setColorMapping(getRandomColorMapping());
+              }
             }}
           />
         </div>
