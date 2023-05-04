@@ -1,27 +1,27 @@
 import { useEffect } from 'react';
 import {
-  PuyoTsumoPatternRepositoryProvider,
-  getInitialPuyoTsumoPatternRepository,
-  usePuyoTsumoPatternRepository,
-} from './PuyoTsumoPatternRepository';
+  PuyoTsumoPatternRepository2Provider,
+  getInitialPuyoTsumoPatternRepository2,
+  usePuyoTsumoPatternRepository2,
+} from './PuyoTsumoPatternRepository2';
 
 type Props = { children: React.ReactNode };
 export const AppContextProvider = (props: Props) => {
   const { children } = props;
   return (
     <>
-      <PuyoTsumoPatternRepositoryProvider>
+      <PuyoTsumoPatternRepository2Provider>
         <ContextInitializer>{children}</ContextInitializer>
-      </PuyoTsumoPatternRepositoryProvider>
+      </PuyoTsumoPatternRepository2Provider>
     </>
   );
 };
 
 const ContextInitializer = ({ children }: { children: React.ReactNode }) => {
-  const [_, setRepository] = usePuyoTsumoPatternRepository();
+  const [_, setRepository] = usePuyoTsumoPatternRepository2();
   useEffect(() => {
     let flag = true;
-    getInitialPuyoTsumoPatternRepository().then((newRepository) => {
+    getInitialPuyoTsumoPatternRepository2().then((newRepository) => {
       flag && setRepository(newRepository);
     });
     return () => {

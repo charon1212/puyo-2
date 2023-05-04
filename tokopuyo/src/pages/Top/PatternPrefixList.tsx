@@ -1,69 +1,59 @@
 import { useMemo, useState } from 'react';
 import { SimpleSelectList } from '@charon1212/my-lib-react';
-import { usePuyoTsumoPatternRepository } from '../../context/PuyoTsumoPatternRepository';
+import { usePuyoTsumoPatternRepository2 } from '../../context/PuyoTsumoPatternRepository2';
 
-const prefixTitles = ['1111', '1112', '1122', '1123', '1211', '1212', '1213', '1222', '1223', '1233'];
-const defaultOpenMap: { [key in string]: boolean } = {
-  '1111': false,
-  '1112': false,
-  '1122': false,
-  '1123': false,
-  '1211': false,
-  '1212': false,
-  '1213': false,
-  '1222': false,
-  '1223': false,
-  '1233': false,
-};
+const defaultOpenMap: { [key in string]: boolean } = { AAAA: false, AAAB: false, AABB: false, ABAC: false, AABC: false };
 
-type Props = {};
+export type SelectValuePatternPrefixList = { startPatternType: string; afterStartPrefix: string };
+type Props = { selectValue?: SelectValuePatternPrefixList; setSelectValue?: (value: SelectValuePatternPrefixList) => void };
 export const PatternPrefixList = (props: Props) => {
-  const {} = props;
-  const [repository] = usePuyoTsumoPatternRepository();
+  const { selectValue, setSelectValue } = props;
+  const [repository] = usePuyoTsumoPatternRepository2();
 
   const menus = useMemo(() => {
-    const prefixList = repository.getPattern([], 4);
-    return prefixTitles.map((prefixTitle) => {
-      return {
-        prefixTitle,
-        tsumoList: prefixList.filter((v) => v.str.startsWith(prefixTitle)),
-      };
-    });
+    const afterStartPrefixList = repository.getAfterStartPrefixList();
+    return afterStartPrefixList.map(({ startPatternType, afterStartPrefixList }) => ({
+      startPatternType,
+      afterStartPrefixList: afterStartPrefixList.sort((a, b) => (a.afterStartPrefix < b.afterStartPrefix ? -1 : 1)),
+      countSum: afterStartPrefixList.map((v) => v.count).reduce((p, c) => p + c, 0),
+    }));
   }, [repository]);
 
   const [openMap, setOpenMap] = useState<{ [key in string]: boolean }>(defaultOpenMap);
   const onClickOpenAnchor =
-    (prefixTitle: string): React.MouseEventHandler<HTMLAnchorElement> =>
+    (startPatternType: string): React.MouseEventHandler<HTMLAnchorElement> =>
     (e) => {
       e.preventDefault();
-      setOpenMap({ ...openMap, [prefixTitle]: openMap[prefixTitle] ? false : true });
+      setOpenMap({ ...openMap, [startPatternType]: openMap[startPatternType] ? false : true });
     };
 
   const getRate = (n: number) => Math.floor((10000 * n) / 65536) / 100;
   return (
     <>
-      <div style={{ maxHeight: '100vh', overflowY: 'scroll', minWidth: '200px', padding: '10px' }}>
-        {menus.map(({ prefixTitle, tsumoList }) => (
+      <div style={{ maxHeight: '100vh', overflowY: 'scroll', minWidth: '200px', margin: '0 10px 0' }}>
+        {menus.map(({ startPatternType, afterStartPrefixList, countSum }) => (
           <>
             <div>
-              {prefixTitle}{' '}
-              <a href='#' onClick={onClickOpenAnchor(prefixTitle)}>
-                {openMap[prefixTitle] ? 'close' : 'open'}
+              {startPatternType}{' '}
+              <a href='#' onClick={onClickOpenAnchor(startPatternType)}>
+                {openMap[startPatternType] ? 'close' : 'open'}
               </a>{' '}
-              ({getRate(tsumoList.map((v) => v.num).reduce((p, c) => p + c, 0))}%)
+              ({getRate(countSum)}%)
             </div>
-            {openMap[prefixTitle] ? (
-              <div>
-                <SimpleSelectList
-                  list={tsumoList}
-                  content={(list) => (
-                    <>
-                      {list.pattern.map(([p, c]) => `${p}${c}`).join('')} ({list.num})
-                    </>
-                  )}
-                  sx={{ listItem: { p: '0 10px 0' }, listItemButton: { p: '0' } }}
-                />
-              </div>
+            {openMap[startPatternType] ? (
+              <SimpleSelectList
+                list={afterStartPrefixList}
+                content={({ afterStartPrefix, count }) => (
+                  <>
+                    {afterStartPrefix} ({count})
+                  </>
+                )}
+                selected={({ afterStartPrefix }) =>
+                  startPatternType === selectValue?.startPatternType && afterStartPrefix === selectValue?.afterStartPrefix
+                }
+                onClick={({ afterStartPrefix }) => setSelectValue?.({ startPatternType, afterStartPrefix })}
+                sx={{ listItem: { p: '0 10px 0' }, listItemButton: { p: '0' } }}
+              />
             ) : (
               ''
             )}

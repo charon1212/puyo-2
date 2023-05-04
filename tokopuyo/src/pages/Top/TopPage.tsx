@@ -1,38 +1,42 @@
 import { useState, useEffect } from 'react';
-import { usePuyoTsumoPatternRepository } from '../../context/PuyoTsumoPatternRepository';
 import { ColorMapping, getRandomColorMapping } from '../../puyo-ui/ColorMapping';
 import { TokopuyoGame } from '../../puyo-ui/TokopuyoGame';
 import { getDefaultKeyConfig } from '../../puyo-ui/TokopuyoGameKeyConfig';
 import { PuyoTsumoPatternInfo } from '../../puyo-domain/PuyoTsumoPatternRepository';
-import { PatternPrefixList } from './PatternPrefixList';
+import { PatternPrefixList, SelectValuePatternPrefixList } from './PatternPrefixList';
+import { usePuyoTsumoPatternRepository2 } from '../../context/PuyoTsumoPatternRepository2';
+import { useTsumoPatternList } from './useTsumoPatternList';
 
 export const TopPage = () => {
-  const [repository] = usePuyoTsumoPatternRepository();
+  const [repository] = usePuyoTsumoPatternRepository2();
   return <>{repository.isEmpty() ? 'ぷよツモインポート中...' : <TopPage2 />}</>;
 };
 
 const TopPage2 = () => {
-  const [repository] = usePuyoTsumoPatternRepository();
-  const [tsumoPattern, setTsumoPattern] = useState<PuyoTsumoPatternInfo>({ id: -1, pattern: [], str: '' });
   const [colorMapping, setColorMapping] = useState<ColorMapping>(getRandomColorMapping());
-  useEffect(() => {
-    setTsumoPattern(repository.getRandom());
-  }, []);
+
+  const [selectValuePatternPrefixList, setSelectValuePatternPrefixList] = useState<SelectValuePatternPrefixList | undefined>();
+
+  const [uiTsumoPatternList, selectedPuyoTsumoPatternInfo, setRandom] = useTsumoPatternList({
+    afterStartPrefix: selectValuePatternPrefixList?.afterStartPrefix,
+    startPatternType: selectValuePatternPrefixList?.startPatternType,
+  });
 
   return (
     <>
       <div style={{ display: 'flex' }}>
         <div>
-          <PatternPrefixList />
+          <PatternPrefixList selectValue={selectValuePatternPrefixList} setSelectValue={setSelectValuePatternPrefixList} />
         </div>
+        <div>{uiTsumoPatternList}</div>
         <div>
           <TokopuyoGame
             radius={15}
             colorMapping={colorMapping}
             keyConfig={getDefaultKeyConfig()}
-            pattern={tsumoPattern.pattern}
+            pattern={selectedPuyoTsumoPatternInfo?.pattern ?? []}
             reset={() => {
-              setTsumoPattern(repository.getRandom());
+              setRandom();
               setColorMapping(getRandomColorMapping());
             }}
           />
