@@ -3,8 +3,8 @@ import { MyAPI } from './electronInterProcessCommunication'
 import * as fs from 'fs';
 
 /** 不要なら削除し、package.jsonからelectron-storeを削除。 */
-const ElectronStore = require('electron-store');
-const store = new ElectronStore();
+// const ElectronStore = require('electron-store');
+// const store = new ElectronStore();
 
 const subscriptions: MyAPI = {
   callSample: (sample) => console.log(`sample! ${sample.name}`),
