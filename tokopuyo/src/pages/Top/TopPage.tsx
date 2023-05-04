@@ -6,6 +6,7 @@ import { PuyoTsumoPatternInfo } from '../../puyo-domain/PuyoTsumoPatternReposito
 import { PatternPrefixList, SelectValuePatternPrefixList } from './PatternPrefixList';
 import { usePuyoTsumoPatternRepository2 } from '../../context/PuyoTsumoPatternRepository2';
 import { useTsumoPatternList } from './useTsumoPatternList';
+import { FoundationMemoView } from './FoundationMemoView';
 
 export const TopPage = () => {
   const [repository] = usePuyoTsumoPatternRepository2();
@@ -40,6 +41,9 @@ const TopPage2 = () => {
               setColorMapping(getRandomColorMapping());
             }}
           />
+        </div>
+        <div>
+          <FoundationMemoView selectValuePatternPrefixList={selectValuePatternPrefixList} />
         </div>
       </div>
     </>

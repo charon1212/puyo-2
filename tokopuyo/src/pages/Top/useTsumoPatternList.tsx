@@ -26,14 +26,10 @@ export const useTsumoPatternList = (props: Props) => {
 
   const ui = (
     <>
-      <div style={{ maxHeight: '100vh', overflowY: 'scroll', minWidth: '200px', margin: '0 10px 0' }}>
+      <div style={{ maxHeight: '100vh', overflowY: 'scroll', minWidth: '300px', margin: '0 10px 0' }}>
         <SimpleSelectList
           list={list}
-          content={({ id, allClear }) => (
-            <>
-              #{id.padStart(5, '0')}({allClear})
-            </>
-          )}
+          content={(info) => <>{toStrPuyoTsumoPatternInfo(info)}</>}
           selected={({ id }) => selectedPuyoTsumoPatternInfo?.id === id}
           onClick={(info) => setSelectedPuyoTsumoPatternInfo(info)}
           sx={{ listItem: { p: '0 10px 0' }, listItemButton: { p: '0' } }}
@@ -49,3 +45,11 @@ const getRandom = <T extends any>(list: T[]) => {
   const index = Math.floor(Math.random() * list.length);
   return list[index];
 };
+
+const toStrPuyoTsumoPatternInfo = (info: PuyoTsumoPatternInfo) =>
+  `#${info.id.padStart(5, '0')} - ` +
+  info.pattern
+    .filter((_, i) => i < 6)
+    .map(([p, c]) => `${p}${c} `)
+    .join('') +
+  ` [${info.allClear}]`;

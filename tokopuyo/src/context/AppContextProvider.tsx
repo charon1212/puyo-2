@@ -4,15 +4,18 @@ import {
   getInitialPuyoTsumoPatternRepository2,
   usePuyoTsumoPatternRepository2,
 } from './PuyoTsumoPatternRepository2';
+import { FoundationMemoProvider, loadFoundationMemo, useFoundationMemo } from './FoundationMemo';
 
 type Props = { children: React.ReactNode };
 export const AppContextProvider = (props: Props) => {
   const { children } = props;
   return (
     <>
-      <PuyoTsumoPatternRepository2Provider>
-        <ContextInitializer>{children}</ContextInitializer>
-      </PuyoTsumoPatternRepository2Provider>
+      <FoundationMemoProvider>
+        <PuyoTsumoPatternRepository2Provider>
+          <ContextInitializer>{children}</ContextInitializer>
+        </PuyoTsumoPatternRepository2Provider>
+      </FoundationMemoProvider>
     </>
   );
 };
@@ -24,6 +27,14 @@ const ContextInitializer = ({ children }: { children: React.ReactNode }) => {
     getInitialPuyoTsumoPatternRepository2().then((newRepository) => {
       flag && setRepository(newRepository);
     });
+    return () => {
+      flag = false;
+    };
+  }, []);
+  const [__, setFoundationMemo] = useFoundationMemo();
+  useEffect(() => {
+    let flag = true;
+    loadFoundationMemo().then((foundationMemo) => setFoundationMemo(foundationMemo));
     return () => {
       flag = false;
     };

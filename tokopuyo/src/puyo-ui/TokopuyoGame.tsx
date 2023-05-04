@@ -127,7 +127,6 @@ export const TokopuyoGame = (props: Props) => {
 
   return (
     <>
-      <div>debug用：{JSON.stringify({ dir, x, index, historyLength: history.length, inRensaAnimation })}</div>
       <div>{inRensaAnimation ? '待機中' : '操作可能'}</div>
       <div style={{ display: 'flex', userSelect: 'none' }}>
         <div tabIndex={0} onKeyDown={onKeyDown} style={{ flexShrink: 0 }}>
