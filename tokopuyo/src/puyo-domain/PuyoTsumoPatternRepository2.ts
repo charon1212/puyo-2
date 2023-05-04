@@ -29,16 +29,14 @@ export class PuyoTsumoPatternRepository2 {
    */
   getAfterStartPrefixList(): { startPatternType: StartPatternType, afterStartPrefixList: { afterStartPrefix: string, count: number }[] }[] {
     return this.json.map(({ start, tsumoPatternList }) => {
-      const afterStartPrefixMap = tsumoPatternList.map((v) => v.pattern.substring(4, 8));
-      const afterStartPrefixGroup = afterStartPrefixMap.reduce((p: string[], c) => p.includes(c) ? p : [...p, c], []);
-      const afterStartPrefixList = afterStartPrefixGroup.map((afterStartPrefix) => ({ afterStartPrefix, count: afterStartPrefixMap.filter((v) => v === afterStartPrefix).length }));
-      return { startPatternType: start, afterStartPrefixList };
+      const afterStartPrefixMap = tsumoPatternList.map((v) => normalize(v.pattern.substring(4, 8)));
+      return { startPatternType: start, afterStartPrefixList: aggregate(afterStartPrefixMap).map(({ value, count }) => ({ afterStartPrefix: value, count })) };
     });
   };
 
   getTsumoListByAfterStartPrefix(startPatternType: StartPatternType, afterStartPrefix: string,): PuyoTsumoPatternInfo[] {
     const result = this.json.find((v) => v.start === startPatternType)?.tsumoPatternList
-      .filter(({ pattern }) => pattern.substring(4, 8) === afterStartPrefix)
+      .filter(({ pattern }) => normalize(pattern.substring(4, 8)) === afterStartPrefix)
       .map(({ id, pattern, allClear }) => ({ id, allClear, pattern: convert(pattern) }))
     if (!result) throw new Error(`no startPatternType found. startPatternType=${startPatternType}`);
     return result;
@@ -53,4 +51,26 @@ const convert = (patternStr: string): PuyoTsumoPattern => {
     pattern.push([p, c]);
   }
   return pattern;
+};
+
+/** 正規化処理 */
+const normalize = (str: string) => {
+  let str2 = '';
+  for (let i = 0; 2 * i + 1 < str.length; i++) {
+    const s1 = str[2 * i];
+    const s2 = str[2 * i + 1];
+    str2 += s1 < s2 ? s1 + s2 : s2 + s1;
+  }
+  return str2;
+};
+
+/** 集約 */
+const aggregate = <T>(list: T[]): { value: T, count: number }[] => {
+  const result: { value: T, count: number }[] = [];
+  for (let item of list) {
+    const find = result.find(({ value }) => value === item);
+    if (find) find.count++;
+    else result.push({ value: item, count: 1 });
+  }
+  return result;
 };
