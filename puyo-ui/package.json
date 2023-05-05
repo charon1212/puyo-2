@@ -1,0 +1,36 @@
+{
+  "name": "@charon1212/puyo-ui",
+  "version": "0.0.0",
+  "description": "",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "scripts": {
+    "prepublishOnly": "tsc",
+    "build": "tsc"
+  },
+  "files": [
+    "build",
+    "README.md",
+    "LICENSE",
+    "package.json"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/charon1212/puyo-2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/charon1212/puyo-2/issues"
+  },
+  "homepage": "https://github.com/charon1212/puyo-2#readme",
+  "dependencies": {
+    "@charon1212/puyo-domain": "file:../puyo-domain",
+    "react": "^18.2.0",
+    "util-charon1212": "^1.20.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.5"
+  }
+}
