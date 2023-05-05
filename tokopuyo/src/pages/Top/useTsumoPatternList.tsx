@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { usePuyoTsumoPatternRepository2 } from '../../context/PuyoTsumoPatternRepository2';
-import { PuyoTsumoPatternInfo, StartPatternType } from '../../puyo-domain/PuyoTsumoPatternRepository2';
 import { SimpleSelectList } from '@charon1212/my-lib-react';
+import { PuyoTsumoPatternInfo, StartPatternType } from '@charon1212/puyo-domain';
 
 type Props = { startPatternType?: string; afterStartPrefix?: string };
 export const useTsumoPatternList = (props: Props) => {

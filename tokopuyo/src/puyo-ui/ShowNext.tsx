@@ -1,8 +1,7 @@
 import { useMemo } from 'react';
-import { PuyoTsumo } from '../puyo-domain/PuyoTsumo';
 import { ColorMapping } from './ColorMapping';
-import { PuyoBoard } from '../puyo-domain/PuyoBoard';
 import { PuyoBoardView } from './PuyoBoardView';
+import { PuyoBoard, PuyoTsumo } from '@charon1212/puyo-domain';
 
 type Props = { nexts: PuyoTsumo[]; colorMapping: ColorMapping; radius: number };
 export const ShowNext = (props: Props) => {

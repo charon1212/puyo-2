@@ -1,7 +1,6 @@
 import { Arr } from 'util-charon1212';
-import { PuyoBoard } from '../puyo-domain/PuyoBoard';
 import { ColorMapping } from './ColorMapping';
-import { PuyoColor } from '../puyo-domain/PuyoColor';
+import { PuyoBoard, PuyoColor } from '@charon1212/puyo-domain';
 
 type Props = { board: PuyoBoard; colorMapping: ColorMapping; radius: number };
 export const PuyoBoardView = (props: Props) => {

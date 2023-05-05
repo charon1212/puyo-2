@@ -1,9 +1,7 @@
 import { useMemo } from 'react';
-import { PuyoCoordinate, getCoordinates } from '../puyo-domain/PuyoCoordinate';
-import { PuyoTsumo } from '../puyo-domain/PuyoTsumo';
-import { PuyoBoard } from '../puyo-domain/PuyoBoard';
 import { PuyoBoardView } from './PuyoBoardView';
 import { ColorMapping } from './ColorMapping';
+import { PuyoBoard, PuyoCoordinate, PuyoTsumo, getCoordinates } from '@charon1212/puyo-domain';
 
 type Props = { cor: PuyoCoordinate; tsumo: PuyoTsumo; colorMapping: ColorMapping; radius: number };
 export const ShowCurrent = (props: Props) => {

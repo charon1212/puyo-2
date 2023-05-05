@@ -1,4 +1,4 @@
-import { PuyoColor } from "../puyo-domain/PuyoColor";
+import { PuyoColor } from "@charon1212/puyo-domain";
 
 export type ColorMapping = { [key in PuyoColor]: string };
 

@@ -1,5 +1,5 @@
 import { createStateContext } from "@charon1212/my-lib-react";
-import { PuyoTsumoPatternRepository2 } from "../puyo-domain/PuyoTsumoPatternRepository2";
+import { PuyoTsumoPatternRepository2 } from "@charon1212/puyo-domain";
 
 const [PuyoTsumoPatternRepository2Provider, usePuyoTsumoPatternRepository2] = createStateContext<PuyoTsumoPatternRepository2>(new PuyoTsumoPatternRepository2());
 export { PuyoTsumoPatternRepository2Provider, usePuyoTsumoPatternRepository2 };

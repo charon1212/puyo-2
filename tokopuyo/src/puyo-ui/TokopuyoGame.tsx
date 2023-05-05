@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Dir, DirUp, PuyoCoordinate, getCoordinateOperator } from '../puyo-domain/PuyoCoordinate';
-import { PuyoTsumoPattern } from '../puyo-domain/PuyoTsumoPattern';
 import { ColorMapping } from './ColorMapping';
-import { PuyoBoard } from '../puyo-domain/PuyoBoard';
 import { ShowCurrent } from './ShowCurrent';
 import { PuyoBoardView } from './PuyoBoardView';
-import { PuyoTsumo } from '../puyo-domain/PuyoTsumo';
 import { Arr } from 'util-charon1212';
 import { ShowNext } from './ShowNext';
 import { TokopuyoGameKeyConfig } from './TokopuyoGameKeyConfig';
+import { Dir, DirUp, PuyoBoard, PuyoCoordinate, PuyoTsumo, PuyoTsumoPattern, getCoordinateOperator } from '@charon1212/puyo-domain';
 
 const initX = 2;
 const initDir = DirUp;
