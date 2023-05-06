@@ -1,11 +1,9 @@
 import { useState } from 'react';
-import { ColorMapping, getRandomColorMapping } from '../../puyo-ui/ColorMapping';
-import { TokopuyoGame } from '../../puyo-ui/TokopuyoGame';
-import { getDefaultKeyConfig } from '../../puyo-ui/TokopuyoGameKeyConfig';
 import { PatternPrefixList, SelectValuePatternPrefixList } from './PatternPrefixList';
 import { usePuyoTsumoPatternRepository2 } from '../../context/PuyoTsumoPatternRepository2';
 import { useTsumoPatternList } from './useTsumoPatternList';
 import { FoundationMemoView } from './FoundationMemoView';
+import { getDefaultKeyConfig, ColorMapping, getRandomColorMapping, TokopuyoGame } from '@charon1212/puyo-ui';
 
 const keyConfig = getDefaultKeyConfig();
 keyConfig.push({ key: 'e', operation: 'reset' });

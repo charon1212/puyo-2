@@ -4,7 +4,8 @@
   "private": true,
   "dependencies": {
     "@charon1212/my-lib-react": "^1.11.1",
-    "@charon1212/puyo-domain": "file:../puyo-domain",
+    "@charon1212/puyo-domain": "^1.0.2",
+    "@charon1212/puyo-ui": "^1.0.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
