@@ -14,7 +14,6 @@ type Args = {
 
 export const useEditablePuyoBoard = (args: Args) => {
   const { initBoard, colorMapping, radius, onMouseRightClick } = args;
-  console.log({ args });
   const [board, setBoard] = useState(initBoard);
   const onMouseClick = (x: number, y: number, side: 'left' | 'right') => {
     if (side === 'left') {
