@@ -11,6 +11,7 @@ export class PuyoBoard {
   width: number;
   height: number;
   board: PuyoColor[][]; // 第1引数は高さ、第2引数は横を表す。
+  ignoreTopRowWhenErase: boolean = true;
   constructor({ width, height }: { width: number, height: number }) {
     this.board = Arr(height).map(() => Arr(width).map(() => emptyColor));
     this.width = width;
@@ -86,9 +87,9 @@ export class PuyoBoard {
    * @returns 1つ以上削除した場合はtrue。
    */
   erase() {
-    // 最上段は控えておき、削除処理中は無いものとし、最後に戻す。
+    // 最上段は控えておき、削除処理中は無いものとし、最後に戻す。 (ignoreTopRowWhenEraseがtrueの時)
     const upperRow = [...(this.board[this.height - 1])];
-    for (let x = 0; x < this.width; x++) this.board[this.height - 1][x] = emptyColor;
+    if (this.ignoreTopRowWhenErase) for (let x = 0; x < this.width; x++) this.board[this.height - 1][x] = emptyColor;
     let examinedList: Point[] = [];
     let eraseList: Point[] = [];
     for (let y = 0; y < this.height - 1; y++) {
@@ -102,8 +103,8 @@ export class PuyoBoard {
         }
       }
     }
-    // 最上段は最後に戻す。
-    this.board[this.height - 1] = upperRow;
+    // 最上段は最後に戻す。 (ignoreTopRowWhenEraseがtrueの時)
+    if (this.ignoreTopRowWhenErase) this.board[this.height - 1] = upperRow;
 
     for (let p of eraseList) this.board[p.y][p.x] = emptyColor;
     return eraseList.length > 0;
