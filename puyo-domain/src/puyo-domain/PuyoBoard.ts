@@ -73,12 +73,14 @@ export class PuyoBoard {
       for (let y = 0; y < this.height; y++) {
         if (this.board[y][x] !== 0) {
           this.board[y - hosei][x] = this.board[y][x];
-          if (hosei > 0) this.board[y][x] = emptyColor;
+          if (hosei > 0) {
+            this.board[y][x] = emptyColor;
+            result = true;
+          }
         } else {
           hosei++;
         }
       }
-      if (hosei > 0) result = true;
     }
     return result;
   }
