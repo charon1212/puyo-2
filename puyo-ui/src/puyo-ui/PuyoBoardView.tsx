@@ -2,9 +2,14 @@ import { Arr } from 'util-charon1212';
 import { ColorMapping } from './ColorMapping';
 import { PuyoBoard, PuyoColor } from '@charon1212/puyo-domain';
 
-type Props = { board: PuyoBoard; colorMapping: ColorMapping; radius: number };
+type Props = {
+  board: PuyoBoard;
+  colorMapping: ColorMapping;
+  radius: number;
+  onMouseClick?: (x: number, y: number, side: 'left' | 'right') => unknown;
+};
 export const PuyoBoardView = (props: Props) => {
-  const { board, colorMapping, radius } = props;
+  const { board, colorMapping, radius, onMouseClick } = props;
   const reversed = [...board.board].reverse();
   return (
     <>
@@ -16,7 +21,15 @@ export const PuyoBoardView = (props: Props) => {
         </colgroup>
         <tbody>
           {reversed.map((row, index) => {
-            return <Row key={index} row={row} colorMapping={colorMapping} radius={radius} />;
+            return (
+              <Row
+                key={index}
+                row={row}
+                colorMapping={colorMapping}
+                radius={radius}
+                onMouseClick={(x, side) => onMouseClick?.(x, reversed.length - 1 - index, side)}
+              />
+            );
           })}
         </tbody>
       </table>
@@ -24,21 +37,21 @@ export const PuyoBoardView = (props: Props) => {
   );
 };
 
-type PropsRow = { row: PuyoColor[]; colorMapping: ColorMapping; radius: number };
+type PropsRow = { row: PuyoColor[]; colorMapping: ColorMapping; radius: number; onMouseClick?: (x: number, side: 'left' | 'right') => unknown };
 const Row = (props: PropsRow) => {
-  const { row, colorMapping, radius } = props;
+  const { row, colorMapping, radius, onMouseClick } = props;
   return (
     <tr>
-      {row.map((cell) => (
-        <Cell cell={cell} colorMapping={colorMapping} radius={radius} />
+      {row.map((cell, x) => (
+        <Cell cell={cell} colorMapping={colorMapping} radius={radius} onMouseClick={(side) => onMouseClick?.(x, side)} />
       ))}
     </tr>
   );
 };
 
-type PropsCell = { cell: PuyoColor; colorMapping: ColorMapping; radius: number };
+type PropsCell = { cell: PuyoColor; colorMapping: ColorMapping; radius: number; onMouseClick?: (side: 'left' | 'right') => unknown };
 const Cell = (props: PropsCell) => {
-  const { cell, colorMapping, radius } = props;
+  const { cell, colorMapping, radius, onMouseClick } = props;
   return (
     <td
       style={{
@@ -53,6 +66,14 @@ const Cell = (props: PropsCell) => {
           justifyContent: 'center',
           width: '100%',
           height: '100%',
+        }}
+        onClick={(e) => {
+          e.preventDefault();
+          onMouseClick?.('left');
+        }}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          onMouseClick?.('right');
         }}
       >
         <div
