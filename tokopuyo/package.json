@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@charon1212/my-lib-react": "^1.11.1",
-    "@charon1212/puyo-domain": "^1.0.2",
+    "@charon1212/puyo-domain": "^1.0.3",
     "@charon1212/puyo-ui": "^1.0.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -17,7 +17,7 @@
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
     "typescript": "^4.9.5",
-    "util-charon1212": "^1.20.1",
+    "util-charon1212": "^1.21.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

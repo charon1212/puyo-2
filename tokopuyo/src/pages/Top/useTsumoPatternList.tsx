@@ -18,7 +18,7 @@ export const useTsumoPatternList = (props: Props) => {
     setRandom();
   }, [list]);
   useEffect(() => {
-    if (afterStartPrefix && startPatternType) {
+    if (afterStartPrefix !== undefined && startPatternType !== undefined) {
       const list = repository.getTsumoListByAfterStartPrefix(startPatternType as StartPatternType, afterStartPrefix);
       setList(list);
     }
@@ -26,14 +26,31 @@ export const useTsumoPatternList = (props: Props) => {
 
   const ui = (
     <>
-      <div style={{ maxHeight: '100vh', overflowY: 'scroll', minWidth: '300px', margin: '0 10px 0' }}>
-        <SimpleSelectList
-          list={list}
-          content={(info) => <>{toStrPuyoTsumoPatternInfo(info)}</>}
-          selected={({ id }) => selectedPuyoTsumoPatternInfo?.id === id}
-          onClick={(info) => setSelectedPuyoTsumoPatternInfo(info)}
-          sx={{ listItem: { p: '0 10px 0' }, listItemButton: { p: '0' } }}
-        />
+      <div style={{ height: '100vh', width: '300px', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ margin: '10px' }}>
+          <div>ID: {'#' + selectedPuyoTsumoPatternInfo?.id.padStart(5, '0') || '-'}</div>
+          <div>全消し最短予想: {selectedPuyoTsumoPatternInfo?.allClear || '-'}</div>
+          <div>pattern:</div>
+          <div>
+            {selectedPuyoTsumoPatternInfo?.pattern
+              .filter((_, i) => i < 10)
+              .map(([p, c]) => `${p}${c}`)
+              .join('_') || '-'}
+          </div>
+        </div>
+        <div style={{ overflowY: 'scroll', margin: '0 10px 0' }}>
+          {afterStartPrefix && afterStartPrefix.length === 4 ? (
+            <SimpleSelectList
+              list={list}
+              content={(info) => <>{toStrPuyoTsumoPatternInfo(info)}</>}
+              selected={({ id }) => selectedPuyoTsumoPatternInfo?.id === id}
+              onClick={(info) => setSelectedPuyoTsumoPatternInfo(info)}
+              sx={{ listItem: { p: '0 10px 0' }, listItemButton: { p: '0' } }}
+            />
+          ) : (
+            '(4手目まで指定していない場合は、性能問題から省略)'
+          )}
+        </div>
       </div>
     </>
   );
@@ -46,10 +63,7 @@ const getRandom = <T extends any>(list: T[]) => {
   return list[index];
 };
 
-const toStrPuyoTsumoPatternInfo = (info: PuyoTsumoPatternInfo) =>
-  `#${info.id.padStart(5, '0')} - ` +
-  info.pattern
-    .filter((_, i) => i < 6)
-    .map(([p, c]) => `${p}${c} `)
-    .join('') +
-  ` [${info.allClear}]`;
+const toStrPuyoTsumoPatternInfo = (info: PuyoTsumoPatternInfo) => {
+  const { id, pattern, allClear } = info;
+  return `#${id.padStart(5, '0')} - ${pattern[4][0]}${pattern[4][1]} ${pattern[5][0]}${pattern[5][1]} [${allClear}]`;
+};
