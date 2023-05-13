@@ -36,7 +36,7 @@ export class PuyoTsumoPatternRepository2 {
 
   getTsumoListByAfterStartPrefix(startPatternType: StartPatternType, afterStartPrefix: string,): PuyoTsumoPatternInfo[] {
     const result = this.json.find((v) => v.start === startPatternType)?.tsumoPatternList
-      .filter(({ pattern }) => normalize(pattern.substring(4, 8)) === afterStartPrefix)
+      .filter(({ pattern }) => normalize(pattern.substring(4, 4 + afterStartPrefix.length)) === afterStartPrefix)
       .map(({ id, pattern, allClear }) => ({ id, allClear, pattern: convert(pattern) }))
     if (!result) throw new Error(`no startPatternType found. startPatternType=${startPatternType}`);
     return result;
