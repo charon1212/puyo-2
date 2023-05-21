@@ -50,5 +50,5 @@ export const getCoordinateOperator = (minX: number, maxX: number,) => ({
       cor.dir === DirUp && cor.x <= minX ? { x: minX + 1, dir: DirLeft } :
         { x: cor.x, dir: rotateDir(cor.dir, 3) }, // mod4のもと、-1と3は同じ。
   moveRight: (cor: PuyoCoordinate): PuyoCoordinate => cor.dir === DirRight ? { x: Math.min(cor.x + 1, maxX - 1), dir: cor.dir } : { x: Math.min(cor.x + 1, maxX), dir: cor.dir },
-  moveLeft: (cor: PuyoCoordinate): PuyoCoordinate => cor.dir === DirRight ? { x: Math.max(cor.x - 1, minX + 1), dir: cor.dir } : { x: Math.max(cor.x - 1, minX), dir: cor.dir },
+  moveLeft: (cor: PuyoCoordinate): PuyoCoordinate => cor.dir === DirLeft ? { x: Math.max(cor.x - 1, minX + 1), dir: cor.dir } : { x: Math.max(cor.x - 1, minX), dir: cor.dir },
 });
